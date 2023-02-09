@@ -8,6 +8,21 @@ terraform {
   }
 }
 
+provider "docker" {}
+
+resource "docker_image" "nginx" {
+  name         = "nginx:latest"
+  keep_locally = false
+}
+
+resource "docker_container" "nginx" {
+  image = docker_image.nginx.latest
+  name  = "nginx"
+  ports {
+    internal = 80
+    external = 8000
+  }
+}
 
 provider "vsphere" {
   # If you use a domain set your login like this "MyDomain\\MyUser"
